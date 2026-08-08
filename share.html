@@ -614,7 +614,7 @@ function panel(k){
       return out;
     }
     if(ad){dates(k).forEach(function(tk){put(tk,{t:t,ad:1,n:n})});
-      save();draw();panel(k);return}
+      save();buildView();draw();panel(k);return}
     if(!s1)return;
     var b1=shift(k,s1,zd(z,BASE,y,m,d)), ss=b1.t, ee=null;
     if(e1){var dur=hh(e1)-hh(s1); if(dur<0)dur+=24;
