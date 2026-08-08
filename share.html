@@ -492,6 +492,7 @@ function panel(k){
     if(evs[q2].bk==EDIT.bk&&evs[q2].i==EDIT.i){ED=evs[q2];break}
     if(!ED)EDIT=null;}
   var EDZ=null, EDS=null, EDE=null;
+  EDK=null;
   if(ED){
     curCat=ED.t;
     var raw=(ST.ev[ED.bk]||[])[ED.i];
@@ -499,7 +500,8 @@ function panel(k){
       var rb=ED.bk.split('-');
       EDZ=raw.z||CZ;
       var ro=zd(BASE,EDZ,+rb[0],+rb[1],+rb[2]);
-      EDS=shift(ED.bk,raw.s,ro).t;
+      var rs=shift(ED.bk,raw.s,ro);
+      EDK=rs.k; EDS=rs.t;
       EDE=raw.e?shift(ED.bk,raw.e,ro).t:null;
     }
   }
@@ -641,7 +643,7 @@ function panel(k){
         } else {
           fm.scrollIntoView({block:'center',behavior:'smooth'});
         }}}});
-  if(q1('fcancel'))q1('fcancel').onclick=function(){EDIT=null;panel(k)};
+  if(q1('fcancel'))q1('fcancel').onclick=function(){EDIT=null;EDK=null;panel(k)};
   q1('fz').onchange=function(){FZ=this.value;
     try{localStorage.setItem('vcal_share_fz',FZ)}catch(e){}};
   q1('ft').onclick=function(){drawPal();drawCats();cd2.showModal()};
@@ -673,16 +675,17 @@ function panel(k){
       return out;
     }
     if(ad){dates(k).forEach(function(tk){put(tk,{t:t,ad:1,n:n})});
-      EDIT=null;save();buildView();draw();panel(k);return}
+      EDIT=null;EDK=null;save();buildView();draw();panel(k);return}
     if(!s1)return;
-    var b1=shift(k,s1,zd(z,BASE,y,m,d)), ss=b1.t, ee=null;
+    var refK=(EDK||k), rp2=refK.split('-');
+    var b1=shift(refK,s1,zd(z,BASE,+rp2[0],+rp2[1],+rp2[2])), ss=b1.t, ee=null;
     if(e1){var dur=hh(e1)-hh(s1); if(dur<0)dur+=24;
       var eh=hh(ss)+dur, ehh=Math.floor(eh)%24, emm=Math.round((eh-Math.floor(eh))*60);
       ee=p2(ehh)+':'+p2(emm)}
     var first=null;
     dates(b1.k).forEach(function(tk){if(!first)first=tk;
       put(tk,{t:t,s:ss,e:ee,n:n,z:z})});
-    EDIT=null;save();buildView();draw();panel(first||k)};
+    EDIT=null;EDK=null;save();buildView();draw();panel(first||k)};
   pb.querySelectorAll('[data-cp]').forEach(function(b){
     b.onclick=function(){var a2=b.dataset.cp.split('|'), src=ST.ev[a2[0]][+a2[1]];
       ST.ev[a2[0]].push({t:src.t,s:src.s,e:src.e,n:src.n,ad:src.ad});
@@ -699,7 +702,7 @@ function panel(k){
 cal.addEventListener('click',function(e){
   var pg=e.target.closest('[data-png]'); if(pg){png(pg.dataset.png);return}
   var b=e.target.closest('.c'); if(!b||b.classList.contains('p'))return;
-  if(sel!=b.dataset.k)EDIT=null;
+  if(sel!=b.dataset.k){EDIT=null;EDK=null}
   sel=b.dataset.k; draw(); panel(sel); W.classList.add('lf');
   if(window.innerWidth<=900){var t=cal.querySelector('.sel');
     if(t)setTimeout(function(){t.scrollIntoView({block:'center',behavior:'smooth'})},40)}
@@ -858,6 +861,7 @@ function png(mk){
 /* ---------- categories ---------- */
 var curCat='stream';
 var EDIT=null;   /* {bk,i} while editing an existing entry */
+var EDK=null;    /* date the edited time falls on, in its own zone */
 var FZ=null;     /* zone last used when entering a time */
 var PAL=['#FF5FA2','#F51E7C','#0B90BC','#2FC1E6','#27B06E','#8FBF3F','#F0A32B','#E5622B',
  '#9B6BD6','#6C7BE0','#8F87A0','#5B6470'];
