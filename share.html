@@ -513,13 +513,13 @@ function panel(k){
   if(ted.length){
     var evs2=ted, lo=48, hi=0;
     /* span[] holds start/end in hours, unwrapped past midnight */
-    var span=evs2.map(function(e){
+    var bars=evs2.map(function(e){
       var s1=hh(e.s), e1;
       if(!e.e){e1=Math.min(s1+3,s1+0.01+3)}      /* open-ended: draw a short stub */
       else{e1=hh(e.e); if(e1<=s1)e1+=24}
       return {s:s1,e:e1,op:!e.e,ev:e};
     });
-    span.forEach(function(b){lo=Math.min(lo,Math.floor(b.s));
+    bars.forEach(function(b){lo=Math.min(lo,Math.floor(b.s));
       hi=Math.max(hi,Math.ceil(b.e))});
     lo=Math.max(0,lo-1); hi=Math.min(48,hi+1);
     if(hi<=lo)hi=lo+2;
@@ -527,7 +527,7 @@ function panel(k){
     for(var q=lo;q<hi;q++)rows+='<div class="tr"><u>'+p2(q%24)+':00</u><i></i>'
       +(o?'<e>'+p2(((q+o)%24+24)%24)+':00</e>':'')+'</div>';
     var bk='';
-    span.forEach(function(b){var e=b.ev;
+    bars.forEach(function(b){var e=b.ev;
       bk+='<div class="bk'+(b.op?' op':'')+'" data-ed="'+e.bk+'|'+e.i+'" style="background:'
         +cat(e.t).c+';top:'+((b.s-lo)*44+1)+'px;height:'+Math.max(26,(b.e-b.s)*44-3)+'px">'+esc(e.n)
         +'<small>'+jst(e.s,o)+(b.op?'〜 未定':'–'+jst(e.e,o))+' JST</small></div>'});
