@@ -130,6 +130,10 @@ font:inherit;color:inherit}
 .ei .x{background:none;border:0;color:var(--mu);cursor:pointer;font-size:15px;padding:0 2px;flex:none}
 .ei .x:hover{color:var(--pkd)}
 .fm{display:grid;gap:7px;border:1px dashed var(--ed2);border-radius:6px;padding:10px}
+.fm.ed{border:2px solid var(--pk);border-style:solid;background:var(--rz);padding:12px}
+.fmh{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--pk)}
+.fmh span{flex:1}
+.ei.ed{border-color:var(--pk);box-shadow:0 0 0 1px var(--pk);background:var(--rz)}
 .fr{display:flex;gap:7px;align-items:center}
 .fr label{font-size:11.5px;color:var(--mu);width:52px;flex:none}
 .fr select,.fr input[type=time],.fr input[type=text]{flex:1;min-width:0;background:var(--sf);
@@ -163,7 +167,7 @@ background:var(--cd);text-decoration:none;font-style:normal}
 padding:4px 7px;font-size:11.5px;font-weight:700;line-height:1.3;overflow:hidden}
 .bk.sc{background:var(--bld)}
 .bk.op{background:linear-gradient(180deg,var(--pk) 0%,var(--pk) 50%,rgba(255,95,162,.15) 100%)}
-.bk small{display:block;font-weight:400;font-size:10px;opacity:.93}
+.bk small{display:block;font-weight:400;font-size:10px;opacity:.93;line-height:1.35}
 .em{color:var(--mu);font-size:13px}
 .intro{position:fixed;inset:0;z-index:40;background:var(--bg);overflow-y:auto;
 padding:34px 22px 40px;display:none}
@@ -487,7 +491,18 @@ function panel(k){
   if(EDIT){for(var q2=0;q2<evs.length;q2++)
     if(evs[q2].bk==EDIT.bk&&evs[q2].i==EDIT.i){ED=evs[q2];break}
     if(!ED)EDIT=null;}
-  if(ED)curCat=ED.t;
+  var EDZ=null, EDS=null, EDE=null;
+  if(ED){
+    curCat=ED.t;
+    var raw=(ST.ev[ED.bk]||[])[ED.i];
+    if(raw&&!raw.ad){
+      var rb=ED.bk.split('-');
+      EDZ=raw.z||CZ;
+      var ro=zd(BASE,EDZ,+rb[0],+rb[1],+rb[2]);
+      EDS=shift(ED.bk,raw.s,ro).t;
+      EDE=raw.e?shift(ED.bk,raw.e,ro).t:null;
+    }
+  }
   var cs=(sc===undefined?1:sc), sg='', SV=[1,2,4,6];
   for(var vi=0;vi<SV.length;vi++){var v=SV[vi];
     sg+='<button data-s="'+v+'" class="'+(cs==v?'on':'')+'">+'+v+'</button>'}
@@ -495,7 +510,8 @@ function panel(k){
 
   var el='';
   for(var i=0;i<evs.length;i++){var e=evs[i];
-    el+='<div class="ei"><span class="bd" style="background:'+cat(e.t).c+'"></span>'
+    el+='<div class="ei'+(ED&&ED.bk==e.bk&&ED.i==e.i?' ed':'')+'">'
+      +'<span class="bd" style="background:'+cat(e.t).c+'"></span>'
       +'<button class="tw" data-ed="'+e.bk+'|'+e.i+'">'
       +'<b>'+esc(e.n)+'</b><span>'+(e.ad?'終日':
         e.s+(e.e?'–'+e.e+(e.cross?'(翌)':''):'〜 未定')+' '+zinfo(CZ)[1]
@@ -530,7 +546,8 @@ function panel(k){
     bars.forEach(function(b){var e=b.ev;
       bk+='<div class="bk'+(b.op?' op':'')+'" data-ed="'+e.bk+'|'+e.i+'" style="background:'
         +cat(e.t).c+';top:'+((b.s-lo)*44+1)+'px;height:'+Math.max(26,(b.e-b.s)*44-3)+'px">'+esc(e.n)
-        +'<small>'+jst(e.s,o)+(b.op?'〜 未定':'–'+jst(e.e,o))+' JST</small></div>'});
+        +'<small>'+(o?e.s+(b.op?'〜 未定':'–'+e.e)+' '+esc(zinfo(CZ)[1])+'<br>':'')
+        +jst(e.s,o)+(b.op?'〜 未定':'–'+jst(e.e,o))+' 日本</small></div>'});
     var cut='';
     if(o!==0){var ch=((24-o%24)%24+24)%24;   /* CZ hour when the Japan date rolls over */
       if(ch>=lo&&ch<=hi){var nd=new Date(y,m-1,d); nd.setDate(nd.getDate()+1);
@@ -565,19 +582,20 @@ function panel(k){
      +'<label class="tg" style="margin-top:9px"><input type="checkbox" id="skc"'+(sk?' checked':'')
      +'>スキパを使う（この日を集計から外す）</label></div>'
    +'<div class="ps"><div class="pl">'+(ED?'予定を編集':'予定')+'</div><div class="el">'+el+'</div>'
-     +'<div class="fm">'
+     +'<div class="fm'+(ED?' ed':'')+'">'
+       +(ED?'<div class="fmh"><span>この予定を編集しています</span></div>':'')
        +'<div class="fr"><label>種類</label><button class="catbtn" id="ft">'
          +'<span class="sw" style="background:'+cat(curCat).c+'"></span>'
          +'<b>'+esc(cat(curCat).n)+'</b><i>▾</i></button></div>'
        +'<div class="fr"><label>名前</label><input type="text" id="fn" placeholder="配信" value="'
          +(ED?esc(ED.n):'')+'"></div>'
-       +'<div class="fr"><label>時間帯</label><select id="fz">'+zopts(FZ||CZ)+'</select></div>'
+       +'<div class="fr"><label>時間帯</label><select id="fz">'+zopts(EDZ||FZ||CZ)+'</select></div>'
        +'<div class="fr"><label>開始</label><input type="time" id="fs" value="'
-         +((ED&&ED.s)||'05:00')+'" step="900"></div>'
+         +(EDS||'05:00')+'" step="900"></div>'
        +'<div class="fr"><label>終了</label><input type="time" id="fe" value="'
-         +((ED&&ED.e)||'11:00')+'" step="900"'+((ED&&!ED.e&&!ED.ad)?' disabled':'')+'></div>'
+         +(EDE||'11:00')+'" step="900"'+((ED&&!EDE&&!ED.ad)?' disabled':'')+'></div>'
        +'<label class="tg"><input type="checkbox" id="fu"'
-         +((ED&&!ED.e&&!ED.ad)?' checked':'')+'>終了は未定</label>'
+         +((ED&&!EDE&&!ED.ad)?' checked':'')+'>終了は未定</label>'
        +'<label class="tg"><input type="checkbox" id="fad"'+((ED&&ED.ad)?' checked':'')+'>終日</label>'
        +(ED?'':'<div class="fr"><label>繰り返し</label><select id="frp">'
          +'<option value="">なし</option><option value="d">毎日</option>'
@@ -616,7 +634,13 @@ function panel(k){
     b.onclick=function(ev){ev.stopPropagation();
       var a2=b.dataset.ed.split('|');
       EDIT={bk:a2[0],i:+a2[1]}; panel(k);
-      var fm=pb.querySelector('.fm'); if(fm)fm.scrollIntoView({block:'center'})}});
+      var fm=pb.querySelector('.fm');
+      if(fm){var top=fm.offsetTop-(pn.clientHeight-fm.offsetHeight)/2;
+        if(pn.scrollHeight>pn.clientHeight){
+          pn.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+        } else {
+          fm.scrollIntoView({block:'center',behavior:'smooth'});
+        }}}});
   if(q1('fcancel'))q1('fcancel').onclick=function(){EDIT=null;panel(k)};
   q1('fz').onchange=function(){FZ=this.value;
     try{localStorage.setItem('vcal_share_fz',FZ)}catch(e){}};
@@ -657,7 +681,7 @@ function panel(k){
       ee=p2(ehh)+':'+p2(emm)}
     var first=null;
     dates(b1.k).forEach(function(tk){if(!first)first=tk;
-      put(tk,{t:t,s:ss,e:ee,n:n})});
+      put(tk,{t:t,s:ss,e:ee,n:n,z:z})});
     EDIT=null;save();buildView();draw();panel(first||k)};
   pb.querySelectorAll('[data-cp]').forEach(function(b){
     b.onclick=function(){var a2=b.dataset.cp.split('|'), src=ST.ev[a2[0]][+a2[1]];
