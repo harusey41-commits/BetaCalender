@@ -122,7 +122,9 @@ padding:5px 0;cursor:pointer;font-size:13px;font-weight:700;flex:1;min-width:40p
 padding:6px 8px;font-size:12.5px}
 .ei .bd{width:4px;align-self:stretch;border-radius:2px;background:var(--pk);flex:none}
 .ei.sc .bd{background:var(--bld)}
-.ei .tw{flex:1;min-width:0}
+.ei .tw{flex:1;min-width:0;background:none;border:0;text-align:left;padding:0;cursor:pointer;
+font:inherit;color:inherit}
+.ei .tw:hover b{text-decoration:underline}
 .ei .tw b{display:block;font-size:13px}
 .ei .tw span{color:var(--mu);font-size:11.5px}
 .ei .x{background:none;border:0;color:var(--mu);cursor:pointer;font-size:15px;padding:0 2px;flex:none}
@@ -157,7 +159,7 @@ padding:2px 7px;border-radius:4px;flex:none}
 background:var(--cd);text-decoration:none;font-style:normal}
 .tr e{text-align:right;color:var(--pkd)}
 .tr i{flex:1}
-.bk{position:absolute;left:50px;right:50px;background:var(--pk);color:#fff;border-radius:4px;
+.bk{cursor:pointer;position:absolute;left:50px;right:50px;background:var(--pk);color:#fff;border-radius:4px;
 padding:4px 7px;font-size:11.5px;font-weight:700;line-height:1.3;overflow:hidden}
 .bk.sc{background:var(--bld)}
 .bk.op{background:linear-gradient(180deg,var(--pk) 0%,var(--pk) 50%,rgba(255,95,162,.15) 100%)}
@@ -481,6 +483,11 @@ function panel(k){
       mon=new Date(tue); mon.setDate(mon.getDate()+6);
   var span=(tue.getMonth()+1)+'/'+tue.getDate()+'（火）〜 '+(mon.getMonth()+1)+'/'+mon.getDate()+'（月）';
 
+  var ED=null;
+  if(EDIT){for(var q2=0;q2<evs.length;q2++)
+    if(evs[q2].bk==EDIT.bk&&evs[q2].i==EDIT.i){ED=evs[q2];break}
+    if(!ED)EDIT=null;}
+  if(ED)curCat=ED.t;
   var cs=(sc===undefined?1:sc), sg='', SV=[1,2,4,6];
   for(var vi=0;vi<SV.length;vi++){var v=SV[vi];
     sg+='<button data-s="'+v+'" class="'+(cs==v?'on':'')+'">+'+v+'</button>'}
@@ -488,10 +495,11 @@ function panel(k){
 
   var el='';
   for(var i=0;i<evs.length;i++){var e=evs[i];
-    el+='<div class="ei"><span class="bd" style="background:'+cat(e.t).c+'"></span><span class="tw">'
+    el+='<div class="ei"><span class="bd" style="background:'+cat(e.t).c+'"></span>'
+      +'<button class="tw" data-ed="'+e.bk+'|'+e.i+'">'
       +'<b>'+esc(e.n)+'</b><span>'+(e.ad?'終日':
         e.s+(e.e?'–'+e.e+(e.cross?'(翌)':''):'〜 未定')+' '+zinfo(CZ)[1]
-        +(o?'<br>'+jst(e.s,o)+(e.e?'–'+jst(e.e,o):'〜 未定')+' 日本':''))+'</span></span>'
+        +(o?'<br>'+jst(e.s,o)+(e.e?'–'+jst(e.e,o):'〜 未定')+' 日本':''))+'</span></button>'
       +'<button class="x" data-cp="'+e.bk+'|'+e.i+'" aria-label="複製">⧉</button>'
       +'<button class="x" data-del="'+e.bk+'|'+e.i+'" aria-label="削除">×</button></div>'}
   if(!evs.length)el='<p class="em">予定なし</p>';
@@ -503,20 +511,28 @@ function panel(k){
     +'<span class="adc">'+esc(cat(e.t).n)+'</span></div>'});
   if(adh)adh='<div class="adr">'+adh+'</div>';
   if(ted.length){
-    var evs2=ted, lo=24,hi=0;
-    evs2.forEach(function(e){lo=Math.min(lo,Math.floor(hh(e.s)));
-      hi=Math.max(hi,Math.ceil(hh(e.e||'23:00')))});
-    lo=Math.max(0,lo-1);hi=Math.min(24,hi+1);
+    var evs2=ted, lo=48, hi=0;
+    /* span[] holds start/end in hours, unwrapped past midnight */
+    var span=evs2.map(function(e){
+      var s1=hh(e.s), e1;
+      if(!e.e){e1=Math.min(s1+3,s1+0.01+3)}      /* open-ended: draw a short stub */
+      else{e1=hh(e.e); if(e1<=s1)e1+=24}
+      return {s:s1,e:e1,op:!e.e,ev:e};
+    });
+    span.forEach(function(b){lo=Math.min(lo,Math.floor(b.s));
+      hi=Math.max(hi,Math.ceil(b.e))});
+    lo=Math.max(0,lo-1); hi=Math.min(48,hi+1);
+    if(hi<=lo)hi=lo+2;
     var rows='';
-    for(var q=lo;q<hi;q++)rows+='<div class="tr"><u>'+p2(q)+':00</u><i></i>'
+    for(var q=lo;q<hi;q++)rows+='<div class="tr"><u>'+p2(q%24)+':00</u><i></i>'
       +(o?'<e>'+p2(((q+o)%24+24)%24)+':00</e>':'')+'</div>';
     var bk='';
-    evs2.forEach(function(e){var s1=hh(e.s),e1=hh(e.e||'23:00'),op=!e.e;
-      bk+='<div class="bk'+(op?' op':'')+'" style="background:'+cat(e.t).c+';top:'
-        +((s1-lo)*44+1)+'px;height:'+((e1-s1)*44-3)+'px">'+esc(e.n)
-        +'<small>'+jst(e.s,o)+(op?'〜 未定':'–'+jst(e.e,o))+' JST</small></div>'});
+    span.forEach(function(b){var e=b.ev;
+      bk+='<div class="bk'+(b.op?' op':'')+'" data-ed="'+e.bk+'|'+e.i+'" style="background:'
+        +cat(e.t).c+';top:'+((b.s-lo)*44+1)+'px;height:'+Math.max(26,(b.e-b.s)*44-3)+'px">'+esc(e.n)
+        +'<small>'+jst(e.s,o)+(b.op?'〜 未定':'–'+jst(e.e,o))+' JST</small></div>'});
     var cut='';
-    if(o!==0){var ch=(24-o%24)%24;   /* CZ hour when the Japan date rolls over */
+    if(o!==0){var ch=((24-o%24)%24+24)%24;   /* CZ hour when the Japan date rolls over */
       if(ch>=lo&&ch<=hi){var nd=new Date(y,m-1,d); nd.setDate(nd.getDate()+1);
         cut='<div class="cut" style="top:'+((ch-lo)*44)+'px"><span>ランク日 → '
           +(nd.getMonth()+1)+'/'+nd.getDate()+'</span></div>'}}
@@ -548,24 +564,29 @@ function panel(k){
    +'<div class="ps"><div class="pl">デイリーランクスコア</div><div class="sg" id="sg">'+sg+'</div>'
      +'<label class="tg" style="margin-top:9px"><input type="checkbox" id="skc"'+(sk?' checked':'')
      +'>スキパを使う（この日を集計から外す）</label></div>'
-   +'<div class="ps"><div class="pl">予定</div><div class="el">'+el+'</div>'
+   +'<div class="ps"><div class="pl">'+(ED?'予定を編集':'予定')+'</div><div class="el">'+el+'</div>'
      +'<div class="fm">'
        +'<div class="fr"><label>種類</label><button class="catbtn" id="ft">'
          +'<span class="sw" style="background:'+cat(curCat).c+'"></span>'
          +'<b>'+esc(cat(curCat).n)+'</b><i>▾</i></button></div>'
-       +'<div class="fr"><label>名前</label><input type="text" id="fn" placeholder="配信"></div>'
-       +'<div class="fr"><label>時間帯</label><select id="fz">'+zopts(CZ)+'</select></div>'
-       +'<div class="fr"><label>開始</label><input type="time" id="fs" value="05:00" step="900"></div>'
-       +'<div class="fr"><label>終了</label><input type="time" id="fe" value="11:00" step="900"></div>'
-       +'<label class="tg"><input type="checkbox" id="fu">終了は未定</label>'
-       +'<label class="tg"><input type="checkbox" id="fad">終日</label>'
-       +'<div class="fr"><label>繰り返し</label><select id="frp">'
+       +'<div class="fr"><label>名前</label><input type="text" id="fn" placeholder="配信" value="'
+         +(ED?esc(ED.n):'')+'"></div>'
+       +'<div class="fr"><label>時間帯</label><select id="fz">'+zopts(FZ||CZ)+'</select></div>'
+       +'<div class="fr"><label>開始</label><input type="time" id="fs" value="'
+         +((ED&&ED.s)||'05:00')+'" step="900"></div>'
+       +'<div class="fr"><label>終了</label><input type="time" id="fe" value="'
+         +((ED&&ED.e)||'11:00')+'" step="900"'+((ED&&!ED.e&&!ED.ad)?' disabled':'')+'></div>'
+       +'<label class="tg"><input type="checkbox" id="fu"'
+         +((ED&&!ED.e&&!ED.ad)?' checked':'')+'>終了は未定</label>'
+       +'<label class="tg"><input type="checkbox" id="fad"'+((ED&&ED.ad)?' checked':'')+'>終日</label>'
+       +(ED?'':'<div class="fr"><label>繰り返し</label><select id="frp">'
          +'<option value="">なし</option><option value="d">毎日</option>'
          +'<option value="w">毎週</option><option value="wd">平日のみ</option>'
          +'<option value="we">週末のみ</option></select>'
          +'<input type="number" id="frn" value="4" min="2" max="60" style="max-width:74px">'
-         +'<span style="font-size:12px;color:var(--mu);flex:none">回</span></div>'
-       +'<button class="ab" id="fadd">追加する</button>'
+         +'<span style="font-size:12px;color:var(--mu);flex:none">回</span></div>')
+       +'<button class="ab" id="fadd">'+(ED?'更新する':'追加する')+'</button>'
+       +(ED?'<button class="ab g" id="fcancel">編集をやめる</button>':'')
        +'<p class="hint">選んだ地域の時刻で入力すると、ボストン時間に変換して保存します。日付をまたぐ場合は正しい日に入ります。</p>'
      +'</div></div>'
    +(tl?'<div class="ps"><div class="pl">1日の流れ</div>'+tl+'</div>':'');
@@ -579,7 +600,10 @@ function panel(k){
       try{if(!localStorage.getItem('vcal_share_start')){
         localStorage.setItem('vcal_share_start',k);
         var aa=k.split('-');START={y:+aa[0],m:+aa[1],d:+aa[2]}}}catch(e){}
-    } else delete ST.rk[k];
+    } else {
+      delete ST.rk[k];
+      try{ if(!Object.keys(ST.rk).length)localStorage.removeItem('vcal_share_start'); }catch(e){}
+    }
     save();rebuild();buildView();draw();panel(k)};
   q1('skc').onchange=function(){
     if(this.checked)ST.sk[k]=true; else delete ST.sk[k];
@@ -588,6 +612,14 @@ function panel(k){
     ST.ew[tk]=q1('ewn').value.trim()||'イベント';save();buildView();draw();panel(k)};
   if(q1('ewdel'))q1('ewdel').onclick=function(){
     delete ST.ew[tk];save();buildView();draw();panel(k)};
+  pb.querySelectorAll('[data-ed]').forEach(function(b){
+    b.onclick=function(ev){ev.stopPropagation();
+      var a2=b.dataset.ed.split('|');
+      EDIT={bk:a2[0],i:+a2[1]}; panel(k);
+      var fm=pb.querySelector('.fm'); if(fm)fm.scrollIntoView({block:'center'})}});
+  if(q1('fcancel'))q1('fcancel').onclick=function(){EDIT=null;panel(k)};
+  q1('fz').onchange=function(){FZ=this.value;
+    try{localStorage.setItem('vcal_share_fz',FZ)}catch(e){}};
   q1('ft').onclick=function(){drawPal();drawCats();cd2.showModal()};
   q1('fad').onchange=function(){var v=this.checked;
     q1('fs').disabled=v;q1('fe').disabled=v||q1('fu').checked;q1('fu').disabled=v};
@@ -597,8 +629,11 @@ function panel(k){
         ad=q1('fad').checked, s1=q1('fs').value,
         un=q1('fu').checked, e1=un?null:q1('fe').value;
     if(!n)n=cat(t).n;
-    var rp=q1('frp').value, rn=Math.max(1,Math.min(60,+q1('frn').value||1));
+    var rp=q1('frp')?q1('frp').value:'', rn=q1('frn')?Math.max(1,Math.min(60,+q1('frn').value||1)):1;
     if(!rp)rn=1;
+    if(EDIT){var arr=ST.ev[EDIT.bk];
+      if(arr){arr.splice(EDIT.i,1); if(!arr.length)delete ST.ev[EDIT.bk]}
+      rp='';rn=1;}
     function put(tk,obj){if(!ST.ev[tk])ST.ev[tk]=[];
       ST.ev[tk].push(obj);
       ST.ev[tk].sort(function(a,b){return (a.ad?-1:0)-(b.ad?-1:0)||hh(a.s||'00:00')-hh(b.s||'00:00')})}
@@ -614,7 +649,7 @@ function panel(k){
       return out;
     }
     if(ad){dates(k).forEach(function(tk){put(tk,{t:t,ad:1,n:n})});
-      save();buildView();draw();panel(k);return}
+      EDIT=null;save();buildView();draw();panel(k);return}
     if(!s1)return;
     var b1=shift(k,s1,zd(z,BASE,y,m,d)), ss=b1.t, ee=null;
     if(e1){var dur=hh(e1)-hh(s1); if(dur<0)dur+=24;
@@ -623,7 +658,7 @@ function panel(k){
     var first=null;
     dates(b1.k).forEach(function(tk){if(!first)first=tk;
       put(tk,{t:t,s:ss,e:ee,n:n})});
-    save();buildView();draw();panel(first||k)};
+    EDIT=null;save();buildView();draw();panel(first||k)};
   pb.querySelectorAll('[data-cp]').forEach(function(b){
     b.onclick=function(){var a2=b.dataset.cp.split('|'), src=ST.ev[a2[0]][+a2[1]];
       ST.ev[a2[0]].push({t:src.t,s:src.s,e:src.e,n:src.n,ad:src.ad});
@@ -640,6 +675,7 @@ function panel(k){
 cal.addEventListener('click',function(e){
   var pg=e.target.closest('[data-png]'); if(pg){png(pg.dataset.png);return}
   var b=e.target.closest('.c'); if(!b||b.classList.contains('p'))return;
+  if(sel!=b.dataset.k)EDIT=null;
   sel=b.dataset.k; draw(); panel(sel); W.classList.add('lf');
   if(window.innerWidth<=900){var t=cal.querySelector('.sel');
     if(t)setTimeout(function(){t.scrollIntoView({block:'center',behavior:'smooth'})},40)}
@@ -797,6 +833,8 @@ function png(mk){
 
 /* ---------- categories ---------- */
 var curCat='stream';
+var EDIT=null;   /* {bk,i} while editing an existing entry */
+var FZ=null;     /* zone last used when entering a time */
 var PAL=['#FF5FA2','#F51E7C','#0B90BC','#2FC1E6','#27B06E','#8FBF3F','#F0A32B','#E5622B',
  '#9B6BD6','#6C7BE0','#8F87A0','#5B6470'];
 var cd2=document.getElementById('cd2'), clist=document.getElementById('clist'),
@@ -942,6 +980,7 @@ czs.onchange=function(){
 };
 
 /* ---------- boot ---------- */
+try{var f0=localStorage.getItem('vcal_share_fz');if(f0)FZ=f0}catch(e){}
 try{var z0=localStorage.getItem('vcal_share_cz');if(z0)CZ=z0}catch(e){}
 load(); seed(); load(); applyTheme(); rebuild(); buildView(); draw();
 
