@@ -126,6 +126,8 @@ padding:6px 8px;font-size:12.5px}
 font:inherit;color:inherit}
 .ei .tw:hover b{text-decoration:underline}
 .ei .tw b{display:block;font-size:13px}
+.ei .rep{font-style:normal;font-size:10px;font-weight:700;color:var(--mu);
+border:1px solid var(--ed2);border-radius:3px;padding:0 4px;margin-left:5px}
 .ei .tw span{color:var(--mu);font-size:11.5px}
 .ei .x{background:none;border:0;color:var(--mu);cursor:pointer;font-size:15px;padding:0 2px;flex:none}
 .ei .x:hover{color:var(--pkd)}
@@ -168,6 +170,88 @@ padding:4px 7px;font-size:11.5px;font-weight:700;line-height:1.3;overflow:hidden
 .bk.sc{background:var(--bld)}
 .bk.op{background:linear-gradient(180deg,var(--pk) 0%,var(--pk) 50%,rgba(255,95,162,.15) 100%)}
 .bk small{display:block;font-weight:400;font-size:10px;opacity:.93;line-height:1.35}
+
+/* ---- event list (new) ---- */
+.evsec{margin-top:6px}
+.evhead{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.evhead .pl{margin:0;flex:1}
+.selbtn{background:none;border:0;color:var(--pk);font-size:13.5px;font-weight:700;
+cursor:pointer;padding:4px 2px}
+.erow{display:flex;align-items:center;gap:11px;padding:12px 4px;cursor:pointer;
+border-bottom:1px solid var(--ed);background:none;width:100%;text-align:left}
+.erow:last-of-type{border-bottom:0}
+.erow:active{background:var(--sf)}
+.erow .chk{width:22px;height:22px;border-radius:50%;border:2px solid var(--ed2);
+flex:none;display:none;place-items:center;font-size:13px;color:#fff}
+.selmode .erow .chk{display:grid}
+.erow.on .chk{background:var(--pk);border-color:var(--pk)}
+.erow .bar{width:4px;align-self:stretch;border-radius:2px;flex:none;min-height:34px}
+.erow .body{flex:1;min-width:0}
+.erow .t1{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px}
+.erow .t2{font-size:12.5px;color:var(--mu);margin-top:2px}
+.erow .rep{font-size:10px;font-weight:700;color:var(--mu);
+border:1px solid var(--ed2);border-radius:4px;padding:0 4px}
+.erow .x{background:none;border:0;color:var(--mu);font-size:20px;line-height:1;
+padding:6px 2px;cursor:pointer;flex:none}
+.selmode .erow .x{display:none}
+.evempty{padding:18px 4px;color:var(--mu);font-size:13.5px}
+.addbtn{width:100%;background:var(--pk);color:#fff;border:0;border-radius:11px;
+padding:13px;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px}
+.selbar{display:none;align-items:center;gap:10px;margin-top:10px;
+padding-top:10px;border-top:1px solid var(--ed)}
+.selmode .selbar{display:flex}
+.selbar .cnt{flex:1;font-size:13.5px;font-weight:700}
+.selbar .del{background:#E5326E;color:#fff;border:0;border-radius:9px;
+padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer}
+.selbar .del:disabled{opacity:.4}
+
+/* ---- bottom sheet for add/edit ---- */
+.scrim{position:fixed;inset:0;background:rgba(20,10,20,.45);opacity:0;
+pointer-events:none;transition:opacity .22s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.esheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--cd);
+border-radius:20px 20px 0 0;transform:translateY(101%);
+transition:transform .26s cubic-bezier(.32,.72,0,1);max-height:88vh;overflow-y:auto;
+box-shadow:0 -12px 40px var(--shadow)}
+.esheet.on{transform:translateY(0)}
+.esheet .grab{width:38px;height:5px;border-radius:3px;background:var(--ed2);margin:8px auto 0}
+.esh{display:flex;align-items:center;padding:13px 16px;border-bottom:1px solid var(--ed);
+position:sticky;top:0;background:var(--cd);z-index:2}
+.esh .ttl{flex:1;text-align:center;font-size:16px;font-weight:800}
+.esh button{background:none;border:0;color:var(--pk);font-size:16px;cursor:pointer;
+font-weight:600;padding:4px 2px;min-width:64px}
+.esh .done{font-weight:800;text-align:right}
+.eform{padding:4px 16px 26px;max-width:520px;margin:0 auto}
+.efr{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--ed)}
+.efr label{font-size:15px;width:96px;flex:none;color:var(--mu)}
+.efr .ctl{flex:1;min-width:0;display:flex;justify-content:flex-end;gap:8px;align-items:center}
+.efr input[type=text]{width:100%;background:none;border:0;font-size:16px;text-align:right;padding:2px 0}
+.efr input[type=time]{background:var(--sf);border:1px solid var(--ed);border-radius:9px;
+padding:9px 12px;font-size:16px}
+.efr select{background:var(--sf);border:1px solid var(--ed);border-radius:9px;
+padding:9px 12px;font-size:16px;max-width:200px}
+.efr input[type=number]{background:var(--sf);border:1px solid var(--ed);border-radius:9px;
+padding:9px 10px;font-size:16px;max-width:80px}
+.efr input[disabled],.efr select[disabled]{opacity:.35}
+.tsw{position:relative;width:52px;height:31px;flex:none}
+.tsw input{opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.tsw i{position:absolute;inset:0;background:var(--ed2);border-radius:16px;
+transition:background .2s;pointer-events:none}
+.tsw i:after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;
+border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tsw input:checked + i{background:var(--pk)}
+.tsw input:checked + i:after{transform:translateX(21px)}
+.catrow{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:600;
+background:none;border:0;cursor:pointer;padding:0}
+.catrow .dot{width:12px;height:12px;border-radius:4px}
+.scope{background:var(--sf);border-radius:11px;padding:4px;display:flex;gap:4px;margin-top:14px}
+.scope button{flex:1;background:none;border:0;border-radius:8px;padding:10px 4px;
+font-size:13px;font-weight:700;color:var(--mu);cursor:pointer}
+.scope button.on{background:var(--cd);color:var(--tx);box-shadow:0 1px 3px var(--shadow)}
+.delbtn{width:100%;background:none;border:1px solid var(--ed2);color:#E5326E;
+border-radius:11px;padding:13px;font-size:15px;font-weight:700;margin-top:16px;cursor:pointer}
+.ehint{font-size:12.5px;color:var(--mu);padding-top:12px}
+
 .em{color:var(--mu);font-size:13px}
 .intro{position:fixed;inset:0;z-index:40;background:var(--bg);overflow-y:auto;
 padding:34px 22px 40px;display:none}
@@ -241,6 +325,18 @@ width:36px;height:4px;border-radius:2px;background:var(--ed2)}}
     <button class="ab" id="introok">はじめる</button>
   </div>
   </div>
+</div>
+
+
+<div class="scrim" id="escrim"></div>
+<div class="esheet" id="esheet">
+  <div class="grab"></div>
+  <div class="esh">
+    <button id="ecancel">キャンセル</button>
+    <span class="ttl" id="ettl">予定を追加</span>
+    <button class="done" id="esave">追加</button>
+  </div>
+  <div class="eform" id="eform"></div>
 </div>
 
 <dialog id="th"><div class="dlg">
@@ -354,8 +450,9 @@ function rkopts(cur){var o='<option value="">指定しない</option>';
     +(cur==RANKS[i]?' selected':'')+'>'+RANKS[i]+'</option>';return o}
 function rebuild(){
   RK={};
-  var anchors=Object.keys(ST.rk).sort(), from0=new Date(START.y,START.m-1,START.d);
-  if(anchors.length){var a0=kd(anchors[0]); if(a0<from0)from0=a0}
+  var anchors=Object.keys(ST.rk).sort();
+  if(!anchors.length)return;          /* 基準がなければランクを出さない */
+  var from0=kd(anchors[0]);
   var idx=0,tot=0,cnt=0,cur=new Date(from0),end=new Date(from0.getFullYear()+6,0,1);
   while(cur<end){
     var k=dk(cur);
@@ -402,10 +499,10 @@ function buildView(){
   Object.keys(ST.ev).forEach(function(bk){
     var b=bk.split('-'), o=zd(BASE,CZ,+b[0],+b[1],+b[2]);
     ST.ev[bk].forEach(function(e,i){
-      if(e.ad){add(bk,{n:e.n,t:e.t,ad:1,bk:bk,i:i});return}
+      if(e.ad){add(bk,{n:e.n,t:e.t,ad:1,bk:bk,i:i,g:e.g});return}
       var s1=shift(bk,e.s,o), ee=null, cross=false;
       if(e.e){var e1=shift(bk,e.e,o); ee=e1.t; cross=(e1.k!=s1.k)}
-      add(s1.k,{n:e.n,t:e.t,s:s1.t,e:ee,cross:cross,bk:bk,i:i});
+      add(s1.k,{n:e.n,t:e.t,s:s1.t,e:ee,cross:cross,bk:bk,i:i,g:e.g});
     });
   });
   Object.keys(VIEW).forEach(function(k){VIEW[k].sort(function(a,b){
@@ -491,7 +588,7 @@ function panel(k){
   if(EDIT){for(var q2=0;q2<evs.length;q2++)
     if(evs[q2].bk==EDIT.bk&&evs[q2].i==EDIT.i){ED=evs[q2];break}
     if(!ED)EDIT=null;}
-  var EDZ=null, EDS=null, EDE=null;
+  var EDZ=null, EDS=null, EDE=null, EDG=null;
   EDK=null;
   if(ED){
     curCat=ED.t;
@@ -504,6 +601,13 @@ function panel(k){
       EDK=rs.k; EDS=rs.t;
       EDE=raw.e?shift(ED.bk,raw.e,ro).t:null;
     }
+    if(raw&&raw.g){
+      var tot=0, aft=0;
+      Object.keys(ST.ev).forEach(function(bk2){
+        ST.ev[bk2].forEach(function(e2){ if(e2.g!==raw.g)return;
+          tot++; if(bk2>=ED.bk)aft++ })});
+      EDG={id:raw.g,n:tot,after:aft};
+    }
   }
   var cs=(sc===undefined?1:sc), sg='', SV=[1,2,4,6];
   for(var vi=0;vi<SV.length;vi++){var v=SV[vi];
@@ -511,16 +615,17 @@ function panel(k){
   sg+='<button data-s="0" class="'+(cs===0?'on':'')+'">0</button>';
 
   var el='';
-  for(var i=0;i<evs.length;i++){var e=evs[i];
-    el+='<div class="ei'+(ED&&ED.bk==e.bk&&ED.i==e.i?' ed':'')+'">'
-      +'<span class="bd" style="background:'+cat(e.t).c+'"></span>'
-      +'<button class="tw" data-ed="'+e.bk+'|'+e.i+'">'
-      +'<b>'+esc(e.n)+'</b><span>'+(e.ad?'終日':
-        e.s+(e.e?'–'+e.e+(e.cross?'(翌)':''):'〜 未定')+' '+zinfo(CZ)[1]
-        +(o?'<br>'+jst(e.s,o)+(e.e?'–'+jst(e.e,o):'〜 未定')+' 日本':''))+'</span></button>'
-      +'<button class="x" data-cp="'+e.bk+'|'+e.i+'" aria-label="複製">⧉</button>'
-      +'<button class="x" data-del="'+e.bk+'|'+e.i+'" aria-label="削除">×</button></div>'}
-  if(!evs.length)el='<p class="em">予定なし</p>';
+  for(var i=0;i<evs.length;i++){var e=evs[i], ec=cat(e.t), eid=e.bk+'|'+e.i;
+    el+='<div class="erow'+(SELED[eid]?' on':'')+'" data-row="'+eid+'">'
+      +'<span class="chk">✓</span>'
+      +'<span class="bar" style="background:'+ec.c+'"></span>'
+      +'<span class="body"><span class="t1">'+esc(e.n)
+        +(e.g?'<i class="rep">繰り返し</i>':'')+'</span>'
+      +'<span class="t2">'+(e.ad?'終日':
+        e.s+(e.e?'–'+e.e+(e.cross?'(翌)':''):'〜 未定')+' '+esc(zinfo(CZ)[1])
+        +(o?'　'+jst(e.s,o)+(e.e?'–'+jst(e.e,o):'〜 未定')+' 日本':''))
+      +' · '+esc(ec.n)+'</span></span>'
+      +'<button class="x" data-del="'+eid+'" aria-label="削除">×</button></div>'}
 
   var tl='', ads=evs.filter(function(e){return e.ad}),
       ted=evs.filter(function(e){return !e.ad}), adh='';
@@ -583,32 +688,14 @@ function panel(k){
    +'<div class="ps"><div class="pl">デイリーランクスコア</div><div class="sg" id="sg">'+sg+'</div>'
      +'<label class="tg" style="margin-top:9px"><input type="checkbox" id="skc"'+(sk?' checked':'')
      +'>スキパを使う（この日を集計から外す）</label></div>'
-   +'<div class="ps"><div class="pl">'+(ED?'予定を編集':'予定')+'</div><div class="el">'+el+'</div>'
-     +'<div class="fm'+(ED?' ed':'')+'">'
-       +(ED?'<div class="fmh"><span>この予定を編集しています</span></div>':'')
-       +'<div class="fr"><label>種類</label><button class="catbtn" id="ft">'
-         +'<span class="sw" style="background:'+cat(curCat).c+'"></span>'
-         +'<b>'+esc(cat(curCat).n)+'</b><i>▾</i></button></div>'
-       +'<div class="fr"><label>名前</label><input type="text" id="fn" placeholder="配信" value="'
-         +(ED?esc(ED.n):'')+'"></div>'
-       +'<div class="fr"><label>時間帯</label><select id="fz">'+zopts(EDZ||FZ||CZ)+'</select></div>'
-       +'<div class="fr"><label>開始</label><input type="time" id="fs" value="'
-         +(EDS||'05:00')+'" step="900"></div>'
-       +'<div class="fr"><label>終了</label><input type="time" id="fe" value="'
-         +(EDE||'11:00')+'" step="900"'+((ED&&!EDE&&!ED.ad)?' disabled':'')+'></div>'
-       +'<label class="tg"><input type="checkbox" id="fu"'
-         +((ED&&!EDE&&!ED.ad)?' checked':'')+'>終了は未定</label>'
-       +'<label class="tg"><input type="checkbox" id="fad"'+((ED&&ED.ad)?' checked':'')+'>終日</label>'
-       +(ED?'':'<div class="fr"><label>繰り返し</label><select id="frp">'
-         +'<option value="">なし</option><option value="d">毎日</option>'
-         +'<option value="w">毎週</option><option value="wd">平日のみ</option>'
-         +'<option value="we">週末のみ</option></select>'
-         +'<input type="number" id="frn" value="4" min="2" max="60" style="max-width:74px">'
-         +'<span style="font-size:12px;color:var(--mu);flex:none">回</span></div>')
-       +'<button class="ab" id="fadd">'+(ED?'更新する':'追加する')+'</button>'
-       +(ED?'<button class="ab g" id="fcancel">編集をやめる</button>':'')
-       +'<p class="hint">選んだ地域の時刻で入力すると、ボストン時間に変換して保存します。日付をまたぐ場合は正しい日に入ります。</p>'
-     +'</div></div>'
+   +'<div class="ps evsec"><div class="evhead"><div class="pl">予定</div>'
+     +(evs.length?'<button class="selbtn" id="eselbtn">'+(SELMODE?'完了':'選択')+'</button>':'')
+     +'</div>'
+     +(evs.length?el:'<div class="evempty">予定はありません</div>')
+     +'<button class="addbtn" id="eadd">＋ 予定を追加</button>'
+     +'<div class="selbar"><span class="cnt" id="ecnt">'+Object.keys(SELED).length+'件を選択</span>'
+     +'<button class="del" id="edelsel"'+(Object.keys(SELED).length?'':' disabled')+'>削除</button></div>'
+   +'</div>'
    +(tl?'<div class="ps"><div class="pl">1日の流れ</div>'+tl+'</div>':'');
 
   var q1=function(i){return document.getElementById(i)};
@@ -616,14 +703,8 @@ function panel(k){
     var v=+b.dataset.s; if(v===1)delete ST.sc[k]; else ST.sc[k]=v;
     save();rebuild();buildView();draw();panel(k)};
   q1('rksel').onchange=function(){
-    if(this.value){ST.rk[k]=this.value;
-      try{if(!localStorage.getItem('vcal_share_start')){
-        localStorage.setItem('vcal_share_start',k);
-        var aa=k.split('-');START={y:+aa[0],m:+aa[1],d:+aa[2]}}}catch(e){}
-    } else {
-      delete ST.rk[k];
-      try{ if(!Object.keys(ST.rk).length)localStorage.removeItem('vcal_share_start'); }catch(e){}
-    }
+    if(this.value){ST.rk[k]=this.value;RKSTART(k);}
+    else{delete ST.rk[k];RKCLEAR();}
     save();rebuild();buildView();draw();panel(k)};
   q1('skc').onchange=function(){
     if(this.checked)ST.sk[k]=true; else delete ST.sk[k];
@@ -632,66 +713,47 @@ function panel(k){
     ST.ew[tk]=q1('ewn').value.trim()||'イベント';save();buildView();draw();panel(k)};
   if(q1('ewdel'))q1('ewdel').onclick=function(){
     delete ST.ew[tk];save();buildView();draw();panel(k)};
-  pb.querySelectorAll('[data-ed]').forEach(function(b){
+
+  /* ---- event list interactions ---- */
+  if(q1('eselbtn'))q1('eselbtn').onclick=function(){
+    SELMODE=!SELMODE; SELED={}; panel(k)};
+  if(q1('edelsel'))q1('edelsel').onclick=function(){
+    Object.keys(SELED).forEach(function(id){var a=id.split('|');
+      if(ST.ev[a[0]])ST.ev[a[0]][+a[1]]=null});
+    Object.keys(ST.ev).forEach(function(bk){
+      ST.ev[bk]=ST.ev[bk].filter(Boolean); if(!ST.ev[bk].length)delete ST.ev[bk]});
+    SELMODE=false;SELED={};save();buildView();draw();panel(k)};
+  if(q1('eadd'))q1('eadd').onclick=function(){openSheet(k,null)};
+
+  var lp2=null;
+  pb.querySelectorAll('.erow').forEach(function(r){
+    r.addEventListener('pointerdown',function(){
+      lp2=setTimeout(function(){ if(!SELMODE){SELMODE=true;SELED[r.dataset.row]=1;panel(k)} },420)});
+    ['pointerup','pointerleave','pointercancel'].forEach(function(t2){
+      r.addEventListener(t2,function(){clearTimeout(lp2)})});
+    r.addEventListener('click',function(ev){
+      if(ev.target.closest('[data-del]'))return;
+      if(SELMODE){ if(SELED[r.dataset.row])delete SELED[r.dataset.row];
+        else SELED[r.dataset.row]=1; panel(k); return }
+      var a=r.dataset.row.split('|');
+      openSheet(k,{bk:a[0],i:+a[1]})});
+  });
+  pb.querySelectorAll('.bk[data-ed]').forEach(function(b){
     b.onclick=function(ev){ev.stopPropagation();
-      var a2=b.dataset.ed.split('|');
-      EDIT={bk:a2[0],i:+a2[1]}; panel(k);
-      var fm=pb.querySelector('.fm');
-      if(fm){var top=fm.offsetTop-(pn.clientHeight-fm.offsetHeight)/2;
-        if(pn.scrollHeight>pn.clientHeight){
-          pn.scrollTo({top:Math.max(0,top),behavior:'smooth'});
-        } else {
-          fm.scrollIntoView({block:'center',behavior:'smooth'});
-        }}}});
-  if(q1('fcancel'))q1('fcancel').onclick=function(){EDIT=null;EDK=null;panel(k)};
-  q1('fz').onchange=function(){FZ=this.value;
-    try{localStorage.setItem('vcal_share_fz',FZ)}catch(e){}};
-  q1('ft').onclick=function(){drawPal();drawCats();cd2.showModal()};
-  q1('fad').onchange=function(){var v=this.checked;
-    q1('fs').disabled=v;q1('fe').disabled=v||q1('fu').checked;q1('fu').disabled=v};
-  q1('fu').onchange=function(){q1('fe').disabled=this.checked};
-  q1('fadd').onclick=function(){
-    var t=curCat, n=q1('fn').value.trim(), z=q1('fz').value,
-        ad=q1('fad').checked, s1=q1('fs').value,
-        un=q1('fu').checked, e1=un?null:q1('fe').value;
-    if(!n)n=cat(t).n;
-    var rp=q1('frp')?q1('frp').value:'', rn=q1('frn')?Math.max(1,Math.min(60,+q1('frn').value||1)):1;
-    if(!rp)rn=1;
-    if(EDIT){var arr=ST.ev[EDIT.bk];
-      if(arr){arr.splice(EDIT.i,1); if(!arr.length)delete ST.ev[EDIT.bk]}
-      rp='';rn=1;}
-    function put(tk,obj){if(!ST.ev[tk])ST.ev[tk]=[];
-      ST.ev[tk].push(obj);
-      ST.ev[tk].sort(function(a,b){return (a.ad?-1:0)-(b.ad?-1:0)||hh(a.s||'00:00')-hh(b.s||'00:00')})}
-    function dates(startKey){
-      var out=[], cur=kd(startKey), got=0, guard=0;
-      while(got<rn&&guard++<400){
-        var w=cur.getDay(), ok=true;
-        if(rp=='wd')ok=(w>=1&&w<=5);
-        else if(rp=='we')ok=(w==0||w==6);
-        if(ok){out.push(dk(cur));got++}
-        cur.setDate(cur.getDate()+(rp=='w'?7:1));
-      }
-      return out;
-    }
-    if(ad){dates(k).forEach(function(tk){put(tk,{t:t,ad:1,n:n})});
-      EDIT=null;EDK=null;save();buildView();draw();panel(k);return}
-    if(!s1)return;
-    var refK=(EDK||k), rp2=refK.split('-');
-    var b1=shift(refK,s1,zd(z,BASE,+rp2[0],+rp2[1],+rp2[2])), ss=b1.t, ee=null;
-    if(e1){var dur=hh(e1)-hh(s1); if(dur<0)dur+=24;
-      var eh=hh(ss)+dur, ehh=Math.floor(eh)%24, emm=Math.round((eh-Math.floor(eh))*60);
-      ee=p2(ehh)+':'+p2(emm)}
-    var first=null;
-    dates(b1.k).forEach(function(tk){if(!first)first=tk;
-      put(tk,{t:t,s:ss,e:ee,n:n,z:z})});
-    EDIT=null;EDK=null;save();buildView();draw();panel(first||k)};
-  pb.querySelectorAll('[data-cp]').forEach(function(b){
-    b.onclick=function(){var a2=b.dataset.cp.split('|'), src=ST.ev[a2[0]][+a2[1]];
-      ST.ev[a2[0]].push({t:src.t,s:src.s,e:src.e,n:src.n,ad:src.ad});
-      save();buildView();draw();panel(k)}});
+      var a3=b.dataset.ed.split('|');
+      openSheet(k,{bk:a3[0],i:+a3[1]})}});
   pb.querySelectorAll('[data-del]').forEach(function(b){
-    b.onclick=function(){var a2=b.dataset.del.split('|');
+    b.onclick=function(ev){ev.stopPropagation();
+      var a2=b.dataset.del.split('|'), src=(ST.ev[a2[0]]||[])[+a2[1]];
+      if(src&&src.g){
+        var n2=0; Object.keys(ST.ev).forEach(function(bk2){
+          ST.ev[bk2].forEach(function(e2){if(e2.g===src.g)n2++})});
+        if(n2>1&&confirm('繰り返しの予定です（'+n2+'件）。\nOK：すべて削除\nキャンセル：この日だけ削除')){
+          Object.keys(ST.ev).forEach(function(bk2){
+            ST.ev[bk2]=ST.ev[bk2].filter(function(e2){return e2.g!==src.g});
+            if(!ST.ev[bk2].length)delete ST.ev[bk2]});
+          save();buildView();draw();panel(k);return}
+      }
       ST.ev[a2[0]].splice(+a2[1],1);
       if(!ST.ev[a2[0]].length)delete ST.ev[a2[0]];
       save();buildView();draw();panel(k)}});
@@ -702,7 +764,8 @@ function panel(k){
 cal.addEventListener('click',function(e){
   var pg=e.target.closest('[data-png]'); if(pg){png(pg.dataset.png);return}
   var b=e.target.closest('.c'); if(!b||b.classList.contains('p'))return;
-  if(sel!=b.dataset.k){EDIT=null;EDK=null}
+  if(sel!=b.dataset.k){EDIT=null;EDK=null;SELMODE=false;SELED={};
+    if(typeof closeSheet==='function')closeSheet()}
   sel=b.dataset.k; draw(); panel(sel); W.classList.add('lf');
   if(window.innerWidth<=900){var t=cal.querySelector('.sel');
     if(t)setTimeout(function(){t.scrollIntoView({block:'center',behavior:'smooth'})},40)}
@@ -711,6 +774,7 @@ document.addEventListener('click',function(e){
   if(!pn.classList.contains('op'))return;
   if(pn.contains(e.target)||e.target.closest('.c')||e.target.closest('.more')
      ||e.target.closest('.qr')||e.target.closest('.hd')
+     ||e.target.closest('.esheet')||e.target.closest('.scrim')
      ||e.target.closest('dialog')||e.target.closest('[data-png]'))return;
   pn.classList.remove('op');W.classList.remove('lf');sel=null;draw();
 });
@@ -858,10 +922,165 @@ function png(mk){
     setTimeout(function(){URL.revokeObjectURL(u)},2000)});
 }
 
+
+/* ---------- add / edit sheet ---------- */
+function RKSTART(k){try{if(!localStorage.getItem('vcal_share_start')){
+  localStorage.setItem('vcal_share_start',k);var aa=k.split('-');
+  START={y:+aa[0],m:+aa[1],d:+aa[2]}}}catch(e){}}
+function RKCLEAR(){try{if(!Object.keys(ST.rk).length)
+  localStorage.removeItem('vcal_share_start')}catch(e){}}
+var escrim=document.getElementById('escrim'), esheet=document.getElementById('esheet'),
+    eform=document.getElementById('eform'), SHEETED=null, SHEETSCOPE='one';
+function closeSheet(){escrim.classList.remove('on');esheet.classList.remove('on');
+  SHEETED=null;SHEETK=null}
+function openSheet(k,ref){
+  SHEETK=k; SHEETED=ref||null; SHEETSCOPE='one';
+  var a=k.split('-'), y=+a[0], m=+a[1], d=+a[2];
+  var raw=ref?((ST.ev[ref.bk]||[])[ref.i]):null;
+  if(ref&&!raw){closeSheet();return}
+  var z=CZ, ss='18:00', ee='24:00', nm='', ad=false, open=false, gInfo=null;
+  if(raw){
+    nm=raw.n; ad=!!raw.ad; curCat=raw.t;
+    if(!raw.ad){
+      var rb=ref.bk.split('-');
+      z=raw.z||CZ;
+      var ro=zd(BASE,z,+rb[0],+rb[1],+rb[2]);
+      var rs=shift(ref.bk,raw.s,ro);
+      EDK=rs.k; ss=rs.t;
+      ee=raw.e?shift(ref.bk,raw.e,ro).t:'';
+      open=!raw.e;
+    } else { EDK=null }
+    if(raw.g){var tot=0,aft=0;
+      Object.keys(ST.ev).forEach(function(bk2){ST.ev[bk2].forEach(function(e2){
+        if(e2.g!==raw.g)return; tot++; if(bk2>=ref.bk)aft++})});
+      gInfo={n:tot,after:aft};}
+  } else { EDK=null; z=FZ||CZ; }
+
+  document.getElementById('ettl').textContent=raw?'予定を編集':'予定を追加';
+  document.getElementById('esave').textContent=raw?'保存':'追加';
+  var c=cat(curCat);
+  eform.innerHTML=
+   '<div class="efr"><label>種類</label><div class="ctl">'
+     +'<button class="catrow" id="sft"><span class="dot" style="background:'+c.c+'"></span>'
+     +esc(c.n)+' ›</button></div></div>'
+   +'<div class="efr"><label>名前</label><div class="ctl">'
+     +'<input type="text" id="sfn" placeholder="'+esc(c.n)+'" value="'+esc(nm)+'"></div></div>'
+   +'<div class="efr"><label>終日</label><div class="ctl">'
+     +'<span class="tsw"><input type="checkbox" id="sfad"'+(ad?' checked':'')+'><i></i></span></div></div>'
+   +'<div class="efr"><label>時間帯</label><div class="ctl"><select id="sfz"'+(ad?' disabled':'')+'>'
+     +zopts(z)+'</select></div></div>'
+   +'<div class="efr"><label>開始</label><div class="ctl">'
+     +'<input type="time" id="sfs" value="'+ss+'" step="900"'+(ad?' disabled':'')+'></div></div>'
+   +'<div class="efr"><label>終了は未定</label><div class="ctl">'
+     +'<span class="tsw"><input type="checkbox" id="sfu"'+(open?' checked':'')
+     +(ad?' disabled':'')+'><i></i></span></div></div>'
+   +'<div class="efr"><label>終了</label><div class="ctl">'
+     +'<input type="time" id="sfe" value="'+(ee||'24:00')+'" step="900"'
+     +((ad||open)?' disabled':'')+'></div></div>'
+   +(raw?'':'<div class="efr"><label>繰り返し</label><div class="ctl">'
+     +'<select id="sfrp"><option value="">なし</option><option value="d">毎日</option>'
+     +'<option value="w">毎週</option><option value="wd">平日のみ</option>'
+     +'<option value="we">週末のみ</option></select>'
+     +'<input type="number" id="sfrn" value="4" min="2" max="60"></div></div>')
+   +(gInfo?'<div class="ehint">繰り返しの予定です（全'+gInfo.n+'件、この日以降 '+gInfo.after+'件）。</div>'
+     +'<div class="scope" id="sfsc"><button data-s="one" class="on">この日だけ</button>'
+     +'<button data-s="fwd">この日以降</button><button data-s="all">すべて</button></div>':'')
+   +(raw?'<button class="delbtn" id="sdel">この予定を削除</button>':'')
+   +'<p class="ehint">選んだ地域の時刻で入力すると、日付をまたぐ場合も正しい日に入ります。</p>';
+
+  var g=function(i){return document.getElementById(i)};
+  g('sft').onclick=function(){drawPal();drawCats();cd2.showModal()};
+  g('sfad').onchange=function(){var v=this.checked;
+    g('sfs').disabled=v; g('sfz').disabled=v; g('sfu').disabled=v;
+    g('sfe').disabled=v||g('sfu').checked};
+  g('sfu').onchange=function(){g('sfe').disabled=this.checked||g('sfad').checked};
+  g('sfz').onchange=function(){FZ=this.value;
+    try{localStorage.setItem('vcal_share_fz',FZ)}catch(e){}};
+  if(g('sfsc'))g('sfsc').onclick=function(ev){var b=ev.target.closest('button');if(!b)return;
+    SHEETSCOPE=b.dataset.s;
+    g('sfsc').querySelectorAll('button').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on')};
+  if(g('sdel'))g('sdel').onclick=function(){
+    var arr=ST.ev[ref.bk]; if(arr){arr.splice(ref.i,1); if(!arr.length)delete ST.ev[ref.bk]}
+    save();buildView();draw();closeSheet();panel(k)};
+  escrim.classList.add('on'); esheet.classList.add('on');
+}
+document.getElementById('ecancel').onclick=closeSheet;
+escrim.onclick=closeSheet;
+document.getElementById('esave').onclick=function(){
+  var k=SHEETK; if(!k)return;
+  var g=function(i){return document.getElementById(i)};
+  var a=k.split('-'), y=+a[0], m=+a[1], d=+a[2];
+  var t=curCat, n=g('sfn').value.trim()||cat(t).n,
+      ad=g('sfad').checked, z=g('sfz').value,
+      s1=g('sfs').value, un=g('sfu').checked, e1=un?null:g('sfe').value;
+  var rp=g('sfrp')?g('sfrp').value:'',
+      rn=g('sfrn')?Math.max(1,Math.min(60,+g('sfrn').value||1)):1;
+  if(!rp)rn=1;
+  var gid=(rp&&rn>1)?('g'+Date.now().toString(36)):null;
+
+  function put(tk,obj){if(!ST.ev[tk])ST.ev[tk]=[];
+    ST.ev[tk].push(obj);
+    ST.ev[tk].sort(function(x,z2){return (x.ad?-1:0)-(z2.ad?-1:0)
+      ||hh(x.s||'00:00')-hh(z2.s||'00:00')})}
+  function dates(startKey){
+    var out=[],cur=kd(startKey),got=0,guard=0;
+    while(got<rn&&guard++<400){
+      var w=cur.getDay(),ok=true;
+      if(rp=='wd')ok=(w>=1&&w<=5); else if(rp=='we')ok=(w==0||w==6);
+      if(ok){out.push(dk(cur));got++}
+      cur.setDate(cur.getDate()+(rp=='w'?7:1))}
+    return out}
+
+  var targets=null;
+  if(SHEETED){
+    var cur=(ST.ev[SHEETED.bk]||[])[SHEETED.i], gidCur=cur&&cur.g;
+    if(gidCur&&SHEETSCOPE!=='one'){
+      targets=[];
+      Object.keys(ST.ev).forEach(function(bk2){
+        ST.ev[bk2].forEach(function(e2){
+          if(e2.g!==gidCur)return;
+          if(SHEETSCOPE==='fwd'&&bk2<SHEETED.bk)return;
+          targets.push(bk2)})});
+      targets=targets.filter(function(v,ix,ar){return ar.indexOf(v)===ix}).sort();
+      targets.forEach(function(bk2){
+        ST.ev[bk2]=ST.ev[bk2].filter(function(e2){
+          return !(e2.g===gidCur&&(SHEETSCOPE==='all'||bk2>=SHEETED.bk))});
+        if(!ST.ev[bk2].length)delete ST.ev[bk2]});
+      gid=gidCur;
+    } else {
+      var arr=ST.ev[SHEETED.bk];
+      if(arr){arr.splice(SHEETED.i,1); if(!arr.length)delete ST.ev[SHEETED.bk]}
+      gid=null;
+    }
+    rp='';rn=1;
+  }
+
+  if(ad){(targets||dates(k)).forEach(function(tk){put(tk,{t:t,ad:1,n:n,g:gid||undefined})});
+    save();buildView();draw();closeSheet();panel(k);return}
+  if(!s1){closeSheet();return}
+
+  var refK=(SHEETED&&EDK)?EDK:k, rp2=refK.split('-');
+  var b1=shift(refK,s1,zd(z,BASE,+rp2[0],+rp2[1],+rp2[2])), ss=b1.t, ee=null;
+  if(e1){var dur=hh(e1)-hh(s1); if(dur<0)dur+=24;
+    var eh=hh(ss)+dur, ehh=Math.floor(eh)%24, emm=Math.round((eh-Math.floor(eh))*60);
+    ee=p2(ehh)+':'+p2(emm)}
+  if(targets){
+    var shiftDays=Math.round((kd(b1.k)-kd(refK))/86400000);
+    targets.forEach(function(tk){var nd=kd(tk); nd.setDate(nd.getDate()+shiftDays);
+      put(dk(nd),{t:t,s:ss,e:ee,n:n,z:z,g:gid||undefined})});
+  } else {
+    dates(b1.k).forEach(function(tk){put(tk,{t:t,s:ss,e:ee,n:n,z:z,g:gid||undefined})});
+  }
+  save();buildView();draw();closeSheet();panel(k);
+};
+
 /* ---------- categories ---------- */
 var curCat='stream';
 var EDIT=null;   /* {bk,i} while editing an existing entry */
 var EDK=null;    /* date the edited time falls on, in its own zone */
+var SELMODE=false, SELED={};   /* multi-select in the day list */
+var SHEETK=null;               /* date the open sheet belongs to */
 var FZ=null;     /* zone last used when entering a time */
 var PAL=['#FF5FA2','#F51E7C','#0B90BC','#2FC1E6','#27B06E','#8FBF3F','#F0A32B','#E5622B',
  '#9B6BD6','#6C7BE0','#8F87A0','#5B6470'];
