@@ -819,10 +819,10 @@ function png(mk){
     default:return[v,p1,q1]}}
   function lum(c){var r=hx(c),f=function(v){return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};
     return .2126*f(r[0])+.7152*f(r[1])+.0722*f(r[2])}
-  function readable(c){var r=hx(c),k=toHsv(r[0],r[1],r[2]),hh=k[0],ss=k[1],vv=k[2];
-    for(var i=0;i<40;i++){var o=toRgb(hh,ss,vv);if(lum(hex(o[0],o[1],o[2]))<=.30)break;
-      vv*=.95;ss=Math.min(1,ss*1.02)}
-    var o2=toRgb(hh,ss,vv);return hex(o2[0],o2[1],o2[2])}
+  function readable(c){var r=hx(c),k=toHsv(r[0],r[1],r[2]),hh2=k[0],ss=Math.max(.55,k[1]),vv=k[2];
+    for(var i=0;i<60;i++){var o=toRgb(hh2,ss,vv);if(lum(hex(o[0],o[1],o[2]))<=.22)break;
+      vv*=.94;ss=Math.min(1,ss*1.03)}
+    var o2=toRgb(hh2,ss,vv);return hex(o2[0],o2[1],o2[2])}
   function shiftHue(c,deg){var r=hx(c),k=toHsv(r[0],r[1],r[2]);
     var o=toRgb(((k[0]+deg/360)%1+1)%1,k[1],k[2]);return hex(o[0],o[1],o[2])}
   var EVC=[readable(AD), readable(shiftHue(AD,-142))];
@@ -838,9 +838,10 @@ function png(mk){
       if(e.ad){if(!JD[bk])JD[bk]=[];JD[bk].push({ad:1,n:e.n});return}
       var s1=shift(bk,e.s,o), lab;
       if(!e.e){lab=s1.t+' 〜 未定'}
-      else{var e1=shift(bk,e.e,o), eh=+e1.t.split(':')[0];
-        if(e1.k!=s1.k)eh+=24;
-        lab=s1.t+' – '+p2(eh)+':'+e1.t.split(':')[1]}
+      else{var dur=hh(e.e)-hh(e.s); if(dur<=0)dur+=24;
+        var eh2=hh(s1.t)+dur,
+            hpart=Math.floor(eh2), mpart=Math.round((eh2-hpart)*60);
+        lab=s1.t+' – '+p2(hpart)+':'+p2(mpart)}
       if(!JD[s1.k])JD[s1.k]=[];
       JD[s1.k].push({s:s1.t,lab:lab,n:e.n});
     });
@@ -909,8 +910,12 @@ function png(mk){
       x.fillStyle=ec||AD;x.fillText(lab,px+CW-34-x.measureText(lab).width,py+22)}
     var names=[];
     L.forEach(function(e){if(names.indexOf(e.n)<0)names.push(e.n)});
-    var ty=py+68;
-    x.fillStyle=ec||AD;x.font=F(700,26);x.fillText(names.join(' & '),dx,ty);
+    var ty=py+68, title=names.join(' & '), maxW=CW-(dx-px)-16;
+    x.fillStyle=ec||AD;x.font=F(700,26);
+    if(x.measureText(title).width>maxW){
+      while(title.length>1&&x.measureText(title+'…').width>maxW)title=title.slice(0,-1);
+      title+='…';}
+    x.fillText(title,dx,ty);
     ty+=40;x.font=F(700,25);x.fillStyle=INK;
     for(var j=0;j<L.length&&j<3;j++){
       x.fillText(L[j].ad?'終日':L[j].lab,dx,ty);ty+=34}
